@@ -12,6 +12,7 @@ export async function GET(request: Request) {
   if (!accessToken) {
     try {
       const session = await supabase.auth.getSession();
+      console.log("Supabase session:", session);
       accessToken = session.data.session?.access_token;
     } catch (err) {
       // ignore — will return 401 below
