@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import { supabase } from "../supabase";
+import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
+import { headers, cookies } from "next/headers";
 
 export const dynamic = "force-dynamic";
 
@@ -9,12 +10,9 @@ export async function GET(request: Request) {
     let accessToken = authHeader?.replace(/^Bearer\s+/i, "");
 
     if (!accessToken) {
-      try {
-        const session = await supabase.auth.getSession();
-        accessToken = session.data.session?.access_token;
-      } catch (err) {
-        // ignore — we will return 401 below
-      }
+      const supabase = createRouteHandlerClient({ headers, cookies });
+      const { data: { session } } = await supabase.auth.getSession();
+      accessToken = session?.access_token;
     }
 
     if (!accessToken) {
