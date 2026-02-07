@@ -14,7 +14,7 @@ export default function Home() {
 
   return (
     <>
-      <button onClick={login}>Login with Google</button>;
+      <button onClick={login}>Login with Google</button>
     </>
   )
 }
